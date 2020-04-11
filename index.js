@@ -12,8 +12,8 @@ covidApp.loadCountriesInDropDown = ()=>{
     };
 
     $.ajax(settings).then( (response)=>{
-        console.log('We are in business...')
-        console.log('response:', response);
+        // console.log('We are in business...')
+        // console.log('response:', response);
 
         response.forEach( (item)=>{            
             const fullCountryName = item.Country; //Russia
@@ -50,22 +50,64 @@ covidApp.loadCountriesInDropDown = ()=>{
             searchBox.value = '';
             // console.log(searchBox.value);
             filterList('');
+                
+            
+            // console.log(allStats);
+            // if (allStats.length == 1){
+                //     $(allStats).css('opacity', '0');
+                
+                // } else {
+                    //     $(allStats).css('opacity', '1');
+                    
+                    // }
+
+
+
+        //             const allStats = $('.stats');
+        //     const dropDownOpen = $('.options-container.active');
+        // console.log(dropDownOpen);
+        // if (dropDownOpen.length == 1) {
+        //     $(allStats).css('opacity', '0');
+
+        //     }else {
+        //     $(allStats).css('opacity', '1');
+
+        // };
+
+
+
 
             if (optionsContainer.classList.contains('active')) {
                 searchBox.focus();
-            }
+            };
         });
-
-        // console.log(optionsContainer);
-
+        
+        
         optionsList.forEach((o) => {
             o.addEventListener('click', () => {
-                console.log('hi');
                 selected.innerHTML = o.querySelector('label').innerHTML;
                 optionsContainer.classList.remove('active');
+                //selected country is saved to a variable
+                const selectedCountry = $(selected).text();
+                
+                //display info on the selected country
+                covidApp.getInfo(selectedCountry);                
             })
         });
 
+        // if (selectedCountry) {
+        // const allStats = document.querySelector('.stats');
+        // const allStats = $('.stats');
+        // // allStats.parentNode.removeChild(allStats);
+        // const dropDownOpen = $('.options-container.active');
+        // // console.log(dropDownOpen.length);
+        // if (dropDownOpen.length != 0) {
+        //     // console.log('ji');
+        //     allStats.empty();
+
+        // };
+
+        
         searchBox.addEventListener('keyup', function (e) {
             filterList(e.target.value);
         });
@@ -84,7 +126,73 @@ covidApp.loadCountriesInDropDown = ()=>{
     });
 };
 
+covidApp.getInfo = function(country) {
+    console.log(`User selected: ${country}`);
+    
+    const sett = {
+        "url": "https://api.covid19api.com/summary",
+        "method": "GET",
+        "timeout": 0
+    }
+    $.ajax(sett).done( data =>{
+        const countries = data.Countries;
+        // console.log(countries);
 
+        countries.forEach( item =>{
+            // console.log(item.Country);
+            if (item.Country === country) {
+                // console.log(item);
+                const totalConfirmed = item.TotalConfirmed;
+                const totalDeaths = item.TotalDeaths;
+                const totalRecovered = item.TotalRecovered;
+
+                $('.totalConfirmed').text(`Total Confirmed: ${totalConfirmed}`);
+                $('.totalDeaths').text(`Total Deaths: ${totalDeaths}`);
+                $('.totalRecovered').text(`Total Recovered: ${totalRecovered}`);
+                // console.log(totalConfirmed);
+                // console.log(totalDeaths);
+                // console.log(totalRecovered);
+
+            }
+        });
+
+
+        // const allStats = document.querySelector('.stats');
+        // console.log(allStats);
+
+        // $('.selected').on('click', ()=>{
+        //     // const activeShit = $('.active');
+        //     // if ($(".options-container:contains('.active')")) {
+        //         // $('.stats').empty();
+        //     // };
+            
+        // });
+        // allStats.parentNode.removeChild(allStats);
+
+
+
+
+
+    });
+};
+
+
+// covidApp.removeFuckingShit = ()=>{
+//     $('.options-container').on('click', ()=>{
+
+//         const allStats = $('.stats');
+//         const dropDownOpen = $('.options-container.active');
+//         console.log(dropDownOpen);
+//         if (dropDownOpen.length == 1) {
+//             $(allStats).css('opacity', '0');
+    
+//         } else {
+//             $(allStats).css('opacity', '1');
+    
+//         };
+//     });
+
+// };
 
 
 
@@ -94,6 +202,7 @@ covidApp.loadCountriesInDropDown = ()=>{
 
 covidApp.init = ()=>{
     covidApp.loadCountriesInDropDown();
+    // covidApp.removeFuckingShit();
 };
 
 
