@@ -196,11 +196,14 @@ body {
   font-family: "Roboto", sans-serif;
   background: #f7f6ff; }
 
-h2 {
+.title {
   margin: 0 0 16px 0; }
 
+.globalTitle {
+  margin-bottom: 16px; }
+
 .stats {
-  margin: 16px 0 0 0; }
+  margin: 32px 0 0 0; }
 
 .container {
   margin-top: 0px;

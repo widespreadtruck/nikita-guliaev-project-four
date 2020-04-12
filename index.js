@@ -2,6 +2,31 @@ const covidApp = {};
 
 covidApp.baseURL = 'https://api.covid19api.com/';
 
+covidApp.getGlobalStats = ()=>{
+    const setup = {
+        url: `${covidApp.baseURL}summary`,
+        method: 'GET',
+        timeout: 0
+    };
+
+    $.ajax(setup).done(globalInfo => {
+        const globalNumbers = globalInfo.Global;
+        console.log(globalInfo);
+
+        const totalConfirmedGlobal = globalNumbers.TotalConfirmed;
+        const totalDeathsGlobal = globalNumbers.TotalDeaths;
+        const totalRecoveredGlobal = globalNumbers.TotalRecovered;
+        const dateStampGlobal = globalInfo.Date;
+
+
+        $('.globalTitle').text(`Global stats:`);
+        $('.dateStamp').text(`Last updated: ${dateStampGlobal}`);
+        $('.totalConfirmed').text(`Total Confirmed: ${totalConfirmedGlobal}`);
+        $('.totalDeaths').text(`Total Deaths: ${totalDeathsGlobal}`);
+        $('.totalRecovered').text(`Total Recovered: ${totalRecoveredGlobal}`);
+    });
+};
+
 
 
 covidApp.loadCountriesInDropDown = ()=>{
@@ -104,23 +129,23 @@ covidApp.getInfo = function(country) {
 
     $.ajax(sett).done( data =>{
         console.log(data);
-        const countries = data.Countries;
-        console.log(countries);
+        // const stats = data;
+        console.log(data.Countries);
 
-        countries.forEach( item =>{
+        data.Countries.forEach( item =>{
             // console.log(item.Country);
             if (item.Country === country) {
                 console.log(item);
                 const totalConfirmed = item.TotalConfirmed;
                 const totalDeaths = item.TotalDeaths;
                 const totalRecovered = item.TotalRecovered;
+                const dateStamp = item.Date;
 
+                $('.globalTitle').text(`${country} stats:`);
+                $('.dateStamp').text(`Last updated: ${dateStamp}`);
                 $('.totalConfirmed').text(`Total Confirmed: ${totalConfirmed}`);
                 $('.totalDeaths').text(`Total Deaths: ${totalDeaths}`);
                 $('.totalRecovered').text(`Total Recovered: ${totalRecovered}`);
-                // console.log(totalConfirmed);
-                // console.log(totalDeaths);
-                // console.log(totalRecovered);
             };
         });
     });
@@ -128,6 +153,7 @@ covidApp.getInfo = function(country) {
 
 
 covidApp.init = ()=>{
+    covidApp.getGlobalStats();
     covidApp.loadCountriesInDropDown();
 };
 
