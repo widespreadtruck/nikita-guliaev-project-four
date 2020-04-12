@@ -199,6 +199,9 @@ body {
 h2 {
   margin: 0 0 16px 0; }
 
+.stats {
+  margin: 16px 0 0 0; }
+
 .container {
   margin-top: 0px;
   padding: 32px; }
